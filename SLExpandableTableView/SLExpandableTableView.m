@@ -37,6 +37,16 @@ static BOOL protocol_containsSelector(Protocol *protocol, SEL selector)
 
 @implementation SLExpandableTableView
 
+- (void)collapseAllSectionsBut:(NSInteger)section animated:(BOOL)animated {
+    NSNumber *key = [NSNumber numberWithInteger:section];
+    NSArray *showingCopy = [self.showingSectionsDictionary allKeys];
+    for(NSNumber * showingKeys in showingCopy){
+        if(![showingKeys isEqualToNumber:key]) {
+            [self collapseSection:[showingKeys intValue] animated:animated];
+        }
+    }
+}
+
 #pragma mark - setters and getters
 
 - (id<UITableViewDelegate>)delegate {
@@ -363,7 +373,15 @@ static BOOL protocol_containsSelector(Protocol *protocol, SEL selector)
                 if ([self.showingSectionsDictionary[key] boolValue]) {
                     [self collapseSection:indexPath.section animated:YES];
                 } else {
-                    [self expandSection:indexPath.section animated:YES];
+                    
+                    [CATransaction begin];
+//                    [CATransaction setCompletionBlock: ^{
+                        [self expandSection:indexPath.section animated:YES];
+//                    }];
+                    [self collapseAllSectionsBut:indexPath.section animated:YES];
+                    [CATransaction commit];
+                    
+//                    [self expandSection:indexPath.section animated:YES];
                 }
             }
         } else {

@@ -92,6 +92,7 @@ typedef enum {
 // call tableView:needsToDownloadDataForExpandableSection: to make sure we can expand the section, otherwise through exception
 - (void)expandSection:(NSInteger)section animated:(BOOL)animated;
 - (void)collapseSection:(NSInteger)section animated:(BOOL)animated;
+- (void)collapseAllSectionsBut:(NSInteger)section animated:(BOOL)animated;
 - (void)cancelDownloadInSection:(NSInteger)section;
 - (void)reloadDataAndResetExpansionStates:(BOOL)resetFlag;
 
